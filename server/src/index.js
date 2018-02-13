@@ -9,6 +9,6 @@ const app = express();
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
-app.listen(3000, () => {
-  console.log('Started server on port 3000');
+app.listen(4000, () => {
+  console.log('Started server on port 4000');
 });

@@ -1,14 +1,14 @@
 const ansatteDatabase = [
-  { navn: 'karl', sparken: false },
-  { navn: 'daniel', sparken: false },
-  { navn: 'tjuvradd', sparken: true },
+  { id: '1', navn: 'karl', sparken: false },
+  { id: '2', navn: 'daniel', sparken: false },
+  { id: '3', navn: 'tjuvradd', sparken: true },
 ];
 
 const lønn = {
-    karl: { arlig: 50, bonus: 20 },
-    daniel: { arlig: 55, bonus: 25 },
-    tjuvradd: { arlig: 700, bonus: 69 },
-}
+  karl: { id: '11', arlig: 50, bonus: 20 },
+  daniel: { id: '12', arlig: 55, bonus: 25 },
+  tjuvradd: { id: '13', arlig: 700, bonus: 69 },
+};
 
 const getAnsatte = () => {
   console.info(new Date().toISOString(), 'Henter alle ansatte!');
@@ -19,7 +19,11 @@ const getAnsatte = () => {
 const addAnsatt = (navn, sparken = false) => {
   console.info(new Date().toISOString(), `Legger til ny ansatt: ${navn}`);
 
-  const ny = { navn, sparken };
+  if (ansatteDatabase.some(ansatt => ansatt.navn === navn)) {
+    throw Error(`"${navn} er allerede ansatt"`);
+  }
+
+  const ny = { id: `${Math.random() * 1000}`, navn, sparken };
 
   ansatteDatabase.push(ny);
 
@@ -27,16 +31,16 @@ const addAnsatt = (navn, sparken = false) => {
 };
 
 const spark = navn => {
-    const index = ansatteDatabase.findIndex(ansatt => ansatt.navn === navn);
+  const index = ansatteDatabase.findIndex(ansatt => ansatt.navn === navn);
 
-    if (index < 0) {
-        throw Error(`Fant ingen ansatt ved navn "${navn}"`)
-    }
+  if (index < 0) {
+    throw Error(`Fant ingen ansatt ved navn "${navn}"`);
+  }
 
-    ansatteDatabase[index].sparken = true;
+  ansatteDatabase[index].sparken = true;
 
-    return ansatteDatabase[index];
-}
+  return ansatteDatabase[index];
+};
 
 const getLønn = ansatt => {
   console.info(
@@ -45,10 +49,10 @@ const getLønn = ansatt => {
   );
 
   if (ansatt.navn in lønn) {
-      return lønn[ansatt.navn];
+    return lønn[ansatt.navn];
   }
 
-  return { arlig: 40, bonus: 10 };
+  return { id: `${Math.random() * 1000}`, arlig: 40, bonus: 10 };
 };
 
 module.exports = {

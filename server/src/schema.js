@@ -5,11 +5,13 @@ const { getAnsatte, addAnsatt, getLønn, spark } = require('./ansatteDao');
 
 const typeDefs = `
   type Lonn {
+    id: String!
     arlig: Int!,
     bonus: Int!,
   }
 
   type Ansatt { 
+    id: String!
     navn: String,
     sparken: Boolean,
     lonn: Lonn!
