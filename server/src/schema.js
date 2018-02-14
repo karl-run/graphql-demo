@@ -20,6 +20,7 @@ const typeDefs = `
   type Query { 
     ansatte: [Ansatt]!
     ansatt(navn: String!): Ansatt
+    ansattEtterId(id: Int!): Ansatt @deprecated(reason: "Ikke bruk a pls, fjerner den om et par måneder.")
   }
 
   type Mutation {
@@ -37,6 +38,7 @@ const resolvers = {
 
       return filtrert.length ? filtrert[0] : null;
     },
+    ansattEtterId: (_, { id }) => getAnsatte()[id],    
   },
   Ansatt: {
     lonn: ansatt => {

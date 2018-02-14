@@ -8,11 +8,11 @@
 Start the server:
 * `cd server`
 * `npm i`
-* `npm run start`
+* `npm start`
 
 Start the client:
 * `cd app`
 * `npm i`
-* `npm run start`
+* `npm start`
 
 Visit http://localhost:3000 for the client, visit http://localhost:4000/graphiql for the graphiql interface.
