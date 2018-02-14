@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const { makeExecutableSchema } = require('graphql-tools');
+const fetch = require('node-fetch');
 
 const { getAnsatte, addAnsatt, getLønn, spark } = require('./ansatteDao');
 
@@ -10,11 +11,17 @@ const typeDefs = `
     bonus: Int!,
   }
 
+  type Vaer {
+    type: String!
+    temperatur: String!
+  }
+
   type Ansatt { 
     id: String!
     navn: String,
     sparken: Boolean,
     lonn: Lonn!
+    vaer: Vaer
   }
 
   type Query { 
@@ -38,11 +45,22 @@ const resolvers = {
 
       return filtrert.length ? filtrert[0] : null;
     },
-    ansattEtterId: (_, { id }) => getAnsatte()[id],    
+    ansattEtterId: (_, { id }) => getAnsatte()[id],
   },
   Ansatt: {
     lonn: ansatt => {
       return getLønn(ansatt);
+    },
+    vaer: async ansatt => {
+      const response = await fetch(
+        'https://api.openweathermap.org/data/2.5/weather?lat=59.91&lon=10.75&units=metric&APPID=50d53b57e7a780f412bce602d169faaf',
+      ).then(res => res.json());
+
+      if (response.status > 300) {
+        return { type: 'No weather-data found, API key probably broken.' };
+      } else {
+        return { type: response.weather[0].description, temperatur: response.main.temp };
+      }
     },
   },
   Mutation: {
